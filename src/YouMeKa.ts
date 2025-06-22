@@ -120,3 +120,8 @@ export class YouMeKa {
   }
 
 }
+
+export default async function() {
+  // @ts-ignore
+  await YouMeKa.main(process.argv.slice(2));
+};
