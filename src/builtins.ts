@@ -1,10 +1,11 @@
 import type { Environment } from "./Environment";
 import type { Interpreter } from "./Interpreter";
-import { isString, isYmkCallable, isYmkFunction, YmkEnv, type YmkCallable } from "./object";
+import { isString, isYmkCallable, isYmkFunction,
+    YmkEnv, type YmkCallable } from "./object";
 import { RuntimeError } from "./RuntimeError";
 import { YmkInstance } from "./YmkInstance";
 
-export default function(globalEnv: Environment) {
+export default function (globalEnv: Environment) {
 
     globalEnv.define("env", new YmkEnv());
     globalEnv.define("isNumber", isTypeOf(Number));
@@ -65,7 +66,8 @@ export default function(globalEnv: Environment) {
 function isTypeOf(cls: any): YmkCallable {
   return {
     arity: () => 1,
-    call: (_interpreter: Interpreter, args: Object[]): Object => args[0] instanceof cls,
+    call: (_interpreter: Interpreter, args: Object[]):
+      Object => args[0] instanceof cls,
     toString: (): string => `<native fn is${cls.name}>`
   };
 }
