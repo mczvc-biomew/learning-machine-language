@@ -1,6 +1,5 @@
 import { Token } from "./Token";
 
-// export namespace io.github.yumika {
 export abstract class RuntimeException extends Error {}
 export class RuntimeError extends RuntimeException {
 
@@ -22,4 +21,3 @@ export class ReferenceError extends RuntimeError {
     super(name, message);
   }
 }
-// }
