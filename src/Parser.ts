@@ -548,9 +548,9 @@ export class Parser {
       if (this.match(TokenType.RIGHT_BRACE)) {
         return new ObjectLiteralExpr(null);
       }
-      if (this.match(TokenType.DOT_DOT_DOT) || this.match(TokenType.IDENTIFIER) || this.match(TokenType.STRING)) {
+      // if (this.match(TokenType.DOT_DOT_DOT) || this.match(TokenType.IDENTIFIER) || this.match(TokenType.STRING)) {
         return this.objectLiteral();
-      }
+      // }
     }
 
     if (this.match(TokenType.CASE)) return this.caseExpression();
@@ -704,26 +704,18 @@ export class Parser {
   private objectLiteral(): Expr {
     const properties = new Array<Property>();
 
-    let key: Token | null = this.previous();
     while (!this.check(TokenType.RIGHT_BRACE) && !this.isAtEnd()) {
-      if (this.checkPrevious(TokenType.DOT_DOT_DOT) || this.match(TokenType.DOT_DOT_DOT)) {
+      if (this.match(TokenType.DOT_DOT_DOT)) {
         const spreadExpr = this.expression();
         properties.push(new SpreadProperty(spreadExpr));
-      } else if (this.check(TokenType.COLON) || this.check(TokenType.IDENTIFIER) || this.check(TokenType.STRING)) {
-        if (key === null) {
-          if (this.match(TokenType.IDENTIFIER) || this.match(TokenType.STRING)) {
-            key = this.previous();
-          } else {
-            throw new RuntimeError(key, "Expect property name.");
-          }
-        }
+      } else if (this.match(TokenType.IDENTIFIER) || this.match(TokenType.STRING)) {
+        const key = this.previous();
         this.consume(TokenType.COLON, "Expect ':' after property name.");
         const value = this.expression();
         properties.push(new Pair(key, value));
-      } //else {
-  //        throw error(peek(), "Expect property name.");
-  //      }
-      key = null;
+      } else {
+        throw this.error(this.peek(), "Expect property name.");
+      }
       if (!this.match(TokenType.COMMA))
         break;
     }
