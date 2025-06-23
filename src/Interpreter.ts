@@ -51,6 +51,7 @@ import {
   Unary as UnaryExpr,
   Undefined as UndefinedExpr,
   Variable as VariableExpr,
+  CompoundAssign,
 } from "./Expr";
 
 import { 
@@ -608,6 +609,35 @@ export class Interpreter implements ExprVisitor<Object | undefined | null>, Stmt
     }
 
     return null;
+  }
+
+  visitCompoundAssignExpr(expr: CompoundAssign) {
+    const oldValue = this.environment.get(expr.name);
+    const right = this.evaluate(expr.value);
+
+    if (!isNumber(oldValue) || !isNumber(right)) {
+      throw new RuntimeError(expr.operator, 
+        "Operands must be numbers.");
+    }
+
+    const left = Number(oldValue);
+    const rightValue = Number(right);
+    let result: number;
+
+    switch (expr.operator.type) {
+      case TokenType.PLUS_EQUAL:
+        result = left + rightValue;
+        break;
+      case TokenType.MINUS_EQUAL:
+        result = left - rightValue;
+        break;
+      default:
+        throw new RuntimeError(expr.operator,
+          "Unknown compound assignment.");
+    }
+
+    this.environment.assign(expr.name, result);
+    return result;
   }
 
   visitGetExpr(expr: GetExpr): Object | null | undefined {
