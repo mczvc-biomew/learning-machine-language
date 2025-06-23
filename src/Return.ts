@@ -1,8 +1,6 @@
-// export namespace io.github.yumika {
-  export class Return extends Error {
+export class Return extends Error {
 
-    constructor(
-      public readonly value: Object | null) { super(); }
+  constructor(
+    public readonly value: Object | null) { super(); }
 
-  }
-// }
+}
