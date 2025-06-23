@@ -47,6 +47,7 @@ import {
   Undefined as UndefinedExpr,
   Variable as VariableExpr,
   CompoundAssign,
+  Func as FuncExpr,
 } from "./Expr";
 
 import { Token } from "./Token";
@@ -107,6 +108,21 @@ export class Resolver implements ExprVisitor<VoidFunction | null>, StmtVisitor<V
     this.resolve(func.body);
     this.endScope();
     // restore-current-function
+    this.currentFunction = enclosingFunction;
+  }
+
+  private resolveFunctionExpr(func: FuncExpr, type: FunctionType) {
+    const enclosingFunction = this.currentFunction;
+    this.currentFunction = type;
+
+    this.beginScope();
+    for (const param of func.params) {
+      this.declare(param);
+      this.define(param);
+    }
+    this.resolve(func.body);
+    this.endScope();
+
     this.currentFunction = enclosingFunction;
   }
 
@@ -321,6 +337,11 @@ export class Resolver implements ExprVisitor<VoidFunction | null>, StmtVisitor<V
   public visitCompoundAssignExpr(expr: CompoundAssign) {
     this.resolveLocal(expr, expr.name);
     this.resolve(expr.value);
+    return null;
+  }
+
+  public visitFunctionExpr(expr: FuncExpr): VoidFunction | null {
+    this.resolveFunctionExpr(expr, FunctionType.FUNCTION);
     return null;
   }
 
