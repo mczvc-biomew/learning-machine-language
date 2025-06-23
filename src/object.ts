@@ -6,6 +6,7 @@ import { YmkInstance } from "./YmkInstance";
 
 import { 
   Lambda as LambdaExpr,
+  Func as FuncExpr
 } from "./Expr";
 
 import { Return } from "./Return";
@@ -65,7 +66,7 @@ export class YmkClass implements YmkCallable {
 export class YmkFunction implements YmkCallable {
 
   constructor(
-    private declaration: FuncStmt,
+    private declaration: FuncStmt | FuncExpr,
     private closure: Environment,
     private isInitializer: boolean) {}
   
@@ -78,7 +79,7 @@ export class YmkFunction implements YmkCallable {
   }
 
   toString(): string {
-    return `<fn ${this.declaration.name.lexeme}>`
+    return `<fn ${this.declaration instanceof FuncStmt ? this.declaration.name.lexeme : 'anonymous'}>`
   }
 
   arity(): number { return this.declaration.params.length }
