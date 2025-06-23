@@ -7,7 +7,7 @@
       "request": "launch",
       "name": "Debug File",
       "program": "src/index.ts",
-      "args": ["helloWorld.ymk"],
+      "args": ["helloWorld.matt"],
       "cwd": "${workspaceFolder}",
       "stopOnEntry": false,
       "watchMode": false
