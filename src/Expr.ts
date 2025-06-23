@@ -14,6 +14,7 @@ export interface Visitor<R> {
   visitCaseExpr(expr: Case): R;
   visitCallExpr(expr: Call): R;
   visitCompoundAssignExpr(expr: CompoundAssign): R;
+  visitFunctionExpr(expr: Func): R;
   visitGetExpr(expr: Get): R;
   visitGroupingExpr(expr: Grouping): R;
   visitLambdaExpr(expr: Lambda): R;
@@ -53,6 +54,14 @@ export class Spread extends Expr {
   public accept<R>(visitor: Visitor<R>): R {
     return visitor.visitSpreadExpr(this);
   }
+}
+
+export class Accessor implements Property {
+  constructor(
+    public readonly kind: Token,
+    public readonly name: Token,
+    public readonly func: Func
+  ) {}
 }
 
 export class ArrayIndex extends Expr {
@@ -154,6 +163,19 @@ export class WhenClauses {
     public readonly match: Expr,
     public readonly result: Expr
   ) {}
+}
+
+export class Func extends Expr {
+  constructor(
+    public readonly params: Token[],
+    public readonly body: (Stmt | null)[],
+    public readonly hasVarArgs = false,
+    public readonly hasVarKwargs = false,
+    public readonly varArgsName: Token | null = null,
+    public readonly kwArgsName: Token | null = null
+  ) { super(); }
+
+  public accept<R>(visitor: Visitor<R>) { return visitor.visitFunctionExpr(this); }
 }
 
 export class Get extends Expr {
