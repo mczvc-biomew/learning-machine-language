@@ -46,6 +46,7 @@ import {
   Unary as UnaryExpr,
   Undefined as UndefinedExpr,
   Variable as VariableExpr,
+  CompoundAssign,
 } from "./Expr";
 
 import { Token } from "./Token";
@@ -314,6 +315,12 @@ export class Resolver implements ExprVisitor<VoidFunction | null>, StmtVisitor<V
       this.resolve(expr.elseBranch);
     }
 
+    return null;
+  }
+
+  public visitCompoundAssignExpr(expr: CompoundAssign) {
+    this.resolveLocal(expr, expr.name);
+    this.resolve(expr.value);
     return null;
   }
 
