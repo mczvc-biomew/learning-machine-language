@@ -1,29 +1,27 @@
-// export namespace io.github.yumika {
-  export enum TokenType {
+export enum TokenType {
 
-    // Single-character tokens.
-    LEFT_BRACKET, RIGHT_BRACKET,
-    LEFT_PAREN, RIGHT_PAREN,
-    LEFT_BRACE, RIGHT_BRACE,
-    COMMA, COLON, DOT, MINUS, PLUS,
-    PIPE, SEMICOLON, SLASH, STAR,
+  // Single-character tokens.
+  LEFT_BRACKET, RIGHT_BRACKET,
+  LEFT_PAREN, RIGHT_PAREN,
+  LEFT_BRACE, RIGHT_BRACE,
+  COMMA, COLON, DOT, MINUS, PLUS,
+  PIPE, SEMICOLON, SLASH, STAR,
 
-    // One, two, or three character tokens.
-    ARROW,
-    BANG, BANG_EQUAL,
-    DOT_DOT_DOT,
-    EQUAL, EQUAL_EQUAL,
-    GREATER, GREATER_EQUAL,
-    LESS, LESS_EQUAL,
-    MINUS_MINUS, PLUS_PLUS,
+  // One, two, or three character tokens.
+  ARROW,
+  BANG, BANG_EQUAL,
+  DOT_DOT_DOT,
+  EQUAL, EQUAL_EQUAL,
+  GREATER, GREATER_EQUAL,
+  LESS, LESS_EQUAL,
+  MINUS_MINUS, PLUS_PLUS,
 
-    // Literals.
-    IDENTIFIER, STRING, NUMBER,
+  // Literals.
+  IDENTIFIER, STRING, NUMBER,
 
-    // Keywords.
-    AND, AS, CASE, CLASS, ELSE, FALSE, FUN, FOR, IF, IN, IMPORT, OR, NEW, NOT, NULL,
-    PRINT, PUTS, RETURN, SUPER, THIS, TRUE, UNDEFINED, VAR, WHEN, WHILE,
+  // Keywords.
+  AND, AS, CASE, CLASS, ELSE, FALSE, FUN, FOR, IF, IN, IMPORT, OR, NEW, NOT, NULL,
+  PRINT, PUTS, RETURN, SUPER, THIS, TRUE, UNDEFINED, VAR, WHEN, WHILE,
 
-    EOF
-  }
-// }
+  EOF
+}
