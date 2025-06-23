@@ -79,6 +79,8 @@ fun callCaller() {
 }
 
 callCaller();
+print "fun () { return 42; }";
+print fun () { return 42; };
 print "";
 
 var newStrs = new string[50];
@@ -166,6 +168,7 @@ print typeof(newStrs) + "[" + str(length(newStrs)) + "]";
 // print true.__class__;
 
 print "";
+
 
 print "# Comparison";
 var noReturn = || {};
