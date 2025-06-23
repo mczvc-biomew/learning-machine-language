@@ -13,6 +13,7 @@ export interface Visitor<R> {
   visitBlockExpr(expr: Block): R;
   visitCaseExpr(expr: Case): R;
   visitCallExpr(expr: Call): R;
+  visitCompoundAssignExpr(expr: CompoundAssign): R;
   visitGetExpr(expr: Get): R;
   visitGroupingExpr(expr: Grouping): R;
   visitLambdaExpr(expr: Lambda): R;
@@ -134,6 +135,18 @@ export class Case extends Expr {
     return visitor.visitCaseExpr(this);
   }
 
+}
+
+export class CompoundAssign extends Expr {
+  constructor(
+    public readonly name: Token,
+    public readonly operator: Token,
+    public readonly value: Expr
+  ) { super(); }
+
+  public accept<R>(visitor: Visitor<R>): R {
+    return visitor.visitCompoundAssignExpr(this);
+  }
 }
 
 export class WhenClauses {
