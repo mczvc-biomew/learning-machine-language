@@ -49,6 +49,7 @@ import {
   Undefined as UndefinedExpr,
   Variable as VariableExpr,
   WhenClauses as WhenClausesExpr,
+  CompoundAssign,
 } from "./Expr";
 import type { Property } from "./Expr";
 
@@ -339,17 +340,20 @@ export class Parser {
   private assignment(): Expr  {
     const expr = this.postfix();
 
-    if (this.match(TokenType.EQUAL)) {
-      const equals = this.previous();
+    if (this.match(TokenType.EQUAL, TokenType.MINUS_EQUAL, TokenType.PLUS_EQUAL)) {
+      const operator = this.previous();
       const value = this.assignment();
 
       if (expr instanceof VariableExpr) {
-        const name = (expr as VariableExpr).name;
-        return new AssignExpr(name, value);
+        if (operator.type === TokenType.EQUAL) {
+          return new AssignExpr(expr.name, value);
+        } else {
+          return new CompoundAssign(expr.name, operator, value);
+        }
       } else if (expr instanceof ArrayIndexExpr) {
-        const array = (expr as ArrayIndexExpr).array;
+        const array = expr.array;
         if (!(array instanceof VariableExpr)) {
-          throw new RuntimeError(equals, "Expect array variable.");
+          throw new RuntimeError(operator, "Expect array variable.");
         }
         const name = array.name;
         const index = expr.index;
@@ -358,7 +362,7 @@ export class Parser {
         const get = expr;
         return new SetExpr(get.object, get.name, value);
       }
-      this.error(equals, "Invalid assignment target.");
+      this.error(operator, "Invalid assignment target.");
     }
     return expr;
   }
