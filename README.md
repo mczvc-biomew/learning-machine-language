@@ -7,4 +7,4 @@
 > $ `bun run ./src/index.ts ./helloWorld.matt `
 
 ### Using Node.js
-> $ `node ./src/index.ts ./helloWorld.ymk`
+> $ `node ./src/index.ts ./helloWorld.matt`
