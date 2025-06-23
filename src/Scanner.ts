@@ -13,6 +13,7 @@ export class Scanner {
     ["false", TokenType.FALSE],
     ["fun", TokenType.FUN],
     ["for", TokenType.FOR],
+    ["get", TokenType.GET],
     ["if", TokenType.IF],
     ["import", TokenType.IMPORT],
     ["in", TokenType.IN],
@@ -23,6 +24,7 @@ export class Scanner {
     ["print", TokenType.PRINT],
     ["puts", TokenType.PUTS],
     ["return", TokenType.RETURN],
+    ["set", TokenType.SET],
     ["super", TokenType.SUPER],
     ["this", TokenType.THIS],
     ["true", TokenType.TRUE],
@@ -77,10 +79,18 @@ export class Scanner {
       case '*': this.addToken(TokenType.STAR); break;
       // two-char-tokens
       case '-':
-        this.addToken(this.match('-') ? TokenType.MINUS_MINUS : TokenType.MINUS);
+        if (this.match('=')) {
+          this.addToken(TokenType.MINUS_EQUAL);
+        } else {
+          this.addToken(this.match('-') ? TokenType.MINUS_MINUS : TokenType.MINUS);
+        }
         break;
       case '+':
-        this.addToken(this.match('+') ? TokenType.PLUS_PLUS : TokenType.PLUS);
+        if (this.match('=')) {
+          this.addToken(TokenType.PLUS_EQUAL);
+        } else {
+          this.addToken(this.match('+') ? TokenType.PLUS_PLUS : TokenType.PLUS);
+        }
         break;
       case '!':
         this.addToken(this.match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
