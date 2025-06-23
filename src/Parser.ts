@@ -30,6 +30,7 @@ import {
   Call as CallExpr,
   Case as CaseExpr,
   Get as GetExpr,
+  Func as FuncExpr,
   Grouping as GroupingExpr,
   Lambda as LambdaExpr,
   ListComprehension as ListComprehensionExpr,
@@ -516,6 +517,8 @@ export class Parser {
     if (this.match(TokenType.NULL)) return new LiteralExpr(null);
     if (this.match(TokenType.UNDEFINED)) return new UndefinedExpr();
 
+    if (this.match(TokenType.FUN)) return this.funcExpression("function");
+
     if (this.match(TokenType.NEW)) return this.newObject();
 
     if (this.match(TokenType.NUMBER, TokenType.STRING)) {
@@ -552,9 +555,7 @@ export class Parser {
       if (this.match(TokenType.RIGHT_BRACE)) {
         return new ObjectLiteralExpr(null);
       }
-      // if (this.match(TokenType.DOT_DOT_DOT) || this.match(TokenType.IDENTIFIER) || this.match(TokenType.STRING)) {
         return this.objectLiteral();
-      // }
     }
 
     if (this.match(TokenType.CASE)) return this.caseExpression();
@@ -591,6 +592,24 @@ export class Parser {
 
     this.consume(TokenType.RIGHT_BRACE, "Expect '}' after case expression.");
     return new CaseExpr(caseExpr, whenClauses, elseBranch);
+  }
+
+  private funcExpression(kind: string) {
+    this.consume(TokenType.LEFT_PAREN, 
+      `Expect '(' after ${kind} keyword.`);
+    const parameters = new Array<Token>();
+    if (!this.check(TokenType.RIGHT_PAREN)) {
+      do {
+        parameters.push(this.consume(TokenType.IDENTIFIER,
+          "Expect parameter name."));
+      } while(this.match(TokenType.COMMA));
+    }
+    this.consume(TokenType.RIGHT_PAREN, 
+      "Expect ')' after parameters.");
+    this.consume(TokenType.LEFT_BRACE, 
+      `Expect '{' before ${kind} body.`);
+    const body = this.block();
+    return new FuncExpr(parameters, body);
   }
 
   private lambda(): Expr {
