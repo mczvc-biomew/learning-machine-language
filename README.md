@@ -1,4 +1,4 @@
-# Learning/Language Machine
+# Learning Language/Machine
 > ### Dedicated to:
 > ## Luqas Matthew Noces
 
