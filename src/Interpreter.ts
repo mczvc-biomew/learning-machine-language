@@ -52,6 +52,7 @@ import {
   Undefined as UndefinedExpr,
   Variable as VariableExpr,
   CompoundAssign,
+  Func,
 } from "./Expr";
 
 import { 
@@ -218,7 +219,7 @@ export class Interpreter implements ExprVisitor<Object | undefined | null>, Stmt
     // Inheritance interpret-superclass
     this.environment.define(stmt.name.lexeme, null);
 
-    // Inheritace begin-superclass-environment
+    // Inheritance begin-superclass-environment
     if (stmt.superclass !== null) {
       this.environment = new Environment(this.environment);
       this.environment.define("super", superclass);
@@ -640,6 +641,10 @@ export class Interpreter implements ExprVisitor<Object | undefined | null>, Stmt
     return result;
   }
 
+  visitFunctionExpr(expr: Func): Object | null | undefined {
+    return new YmkFunction(expr, this.environment, false);    
+  }
+
   visitGetExpr(expr: GetExpr): Object | null | undefined {
 
     if (expr.object instanceof ThisExpr) {
@@ -752,7 +757,7 @@ export class Interpreter implements ExprVisitor<Object | undefined | null>, Stmt
         break;
       default:
         defaultValue = null;
-    };
+    }
 
     const result = new Array<Object | null>(size).fill(defaultValue);
     return result;
