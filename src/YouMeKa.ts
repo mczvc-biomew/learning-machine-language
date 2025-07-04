@@ -1,6 +1,4 @@
-// @ts-ignore
 import * as fs from 'fs';
-// @ts-ignore
 import * as readline from 'readline';
 
 import { Interpreter } from "./Interpreter";

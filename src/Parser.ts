@@ -555,7 +555,7 @@ export class Parser {
       if (this.match(TokenType.RIGHT_BRACE)) {
         return new ObjectLiteralExpr(null);
       }
-        return this.objectLiteral();
+      return this.objectLiteral();
     }
 
     if (this.match(TokenType.CASE)) return this.caseExpression();
@@ -768,6 +768,7 @@ export class Parser {
     return this.peek().type === type;
   }
 
+  // @ts-ignore
   private checkPrevious(type: TokenType): boolean {
     if (this.isAtEnd()) return false;
     return this.previous().type === type;
