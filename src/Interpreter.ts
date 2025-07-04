@@ -76,6 +76,7 @@ import builtins from "./builtins";
 
 // @ts-ignore
 import * as fs from 'fs';
+import {stringify, stringifyVarArgs} from "./CUtils.ts";
 
 export class Interpreter implements ExprVisitor<Object | undefined | null>, StmtVisitor<VoidFunction | null> {
   globals: Environment;
@@ -326,15 +327,25 @@ export class Interpreter implements ExprVisitor<Object | undefined | null>, Stmt
   }
 
   visitPrintStmt(stmt: PrintStmt): VoidFunction | null {
+    this.resolve(stmt.expression, 0);
     const value = this.evaluate(stmt.expression);
-    console.log(this.stringify(value));
+    this.print(value, '\n');
     return null;
   }
 
   visitPutsStmt(stmt: PutsStmt): VoidFunction | null {
+    this.resolve(stmt.expression, 0);
     const value = this.evaluate(stmt.expression);
-    console.log(this.stringify(value));
+    this.print(value);
     return null;
+  }
+
+  print(...args: any[]) {
+    if (args.length === 1) {
+      process.stdout.write(stringify(args[0], 0));
+    } else {
+      process.stdout.write(stringifyVarArgs(0, ...args));
+    }
   }
 
   visitReturnStmt(stmt: ReturnStmt): VoidFunction | null {
@@ -409,7 +420,7 @@ export class Interpreter implements ExprVisitor<Object | undefined | null>, Stmt
     if (Array.isArray(arrayOrMapOrObjInstance)) {
       const i = Number(index);
       const list = arrayOrMapOrObjInstance as Array<Object>;
-      list.push(i, value);
+      list[i] = value;
 
       return value;
     } else if (arrayOrMapOrObjInstance instanceof Map) {
@@ -1006,46 +1017,6 @@ export class Interpreter implements ExprVisitor<Object | undefined | null>, Stmt
       }
     }
     return a === b;
-  }
-
-  private stringifyList(list: Array<any>) {
-    let sb = "";
-    let notEmpty = false;
-    sb += "[";
-    for (const element of list) {
-      if (isNumber(element)) {
-        sb += `${element}, `;
-      } else {
-        sb += `"${element.toString()}"`;
-      }
-      if (!notEmpty) {
-        notEmpty = true;
-      }
-    }
-    if (notEmpty) {
-      sb = sb.substring(0, sb.length - 2);
-    }
-    sb += "]";
-    return sb;
-  }
-
-  private stringify(object: Object) {
-
-    if (object === null) return "null";
-
-    if (isNumber(object)) {
-      let text = object.toString();
-      if (text.endsWith(".0")) {
-        text = text.substring(0, text.length - 2);
-      }
-
-      return text;
-    } else if (object instanceof Array) {
-      const list = object as Array<Object>;
-      return this.stringifyList(list);
-    }
-
-    return object.toString();
   }
 
 }
