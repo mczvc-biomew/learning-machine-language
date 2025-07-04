@@ -1,8 +1,10 @@
 # Learning Language/Machine
-> A programming language made for children.
+> A programming language made for children, especially, for Luqas Matt. Collin Bale;
 
-> ### Dedicated to:
-> ## Luqas Matthew Noces
+> ## Dedicated to:
+> ### Luqas Matthew Noces
+> ### Collin Bale Corrales
+---
 
 ## Compile & Run
 ### Using Bun
