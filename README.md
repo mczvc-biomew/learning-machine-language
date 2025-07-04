@@ -1,4 +1,6 @@
-# Learning/Language Machine
+# Learning Language/Machine
+> A programming language made for children.
+
 > ### Dedicated to:
 > ## Luqas Matthew Noces
 
