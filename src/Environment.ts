@@ -1,6 +1,7 @@
 import { Token } from "./Token";
 import { RuntimeError, UndefinedException } from "./RuntimeError";
 import {isString} from "./object.ts";
+import {stringify} from "./CUtils.ts";
 
 export class Environment extends Object {
   enclosing: Environment | null;
@@ -77,9 +78,9 @@ export class Environment extends Object {
   }
 
   public toString(): string {
-    let result: string = this.values.toString();
+    let result: string = stringify(this.values, 0);
     if (this.enclosing !== null) {
-      result += ` -> ${this.enclosing.toString()}`;
+      result += ` -> ${stringify(this.enclosing, 0)}`;
     }
 
     return result;
