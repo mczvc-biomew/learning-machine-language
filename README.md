@@ -3,6 +3,8 @@
 
 > ## Dedicated to:
 > ### Luqas Matthew Noces
+> ### Ysaiah Justine Noces
+> ### Nhigel Gabriel Noces
 > ### Collin Bale Corrales
 ---
 
